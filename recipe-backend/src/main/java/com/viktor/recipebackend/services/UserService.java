@@ -1,0 +1,36 @@
+package com.viktor.recipebackend.services;
+
+import com.viktor.recipebackend.entities.User;
+import com.viktor.recipebackend.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+import java.util.UUID;
+
+@Service
+public class UserService {
+    private final UserRepository userRepository;
+
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public Optional<User> getUserById(UUID idUser) {
+        return userRepository.findById(idUser);
+    }
+
+    public void addOrUpdateUser(User user) {
+        if (user.getId() != null) {
+            userRepository.save(user);
+        } else {
+            User newUser = new User();
+            newUser.setName(user.getName());
+            newUser.setLastname(user.getLastname());
+            newUser.setUsername(user.getUsername());
+            newUser.setPassword(user.getPassword());
+            userRepository.save(newUser);
+        }
+    }
+}
