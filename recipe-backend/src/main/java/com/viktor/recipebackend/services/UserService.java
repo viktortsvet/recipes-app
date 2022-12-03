@@ -18,11 +18,11 @@ public class UserService {
     }
 
     public Optional<User> getUserById(UUID idUser) {
-        return userRepository.findById(idUser);
+        return userRepository.existsById(idUser) ? userRepository.findById(idUser) : Optional.empty();
     }
 
     public void addOrUpdateUser(User user) {
-        if (user.getId() != null) {
+        if (user.getId() != null && userRepository.existsById(user.getId())) {
             userRepository.save(user);
         } else {
             User newUser = new User();
