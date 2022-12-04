@@ -12,10 +12,14 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     @Bean
     SecurityFilterChain makeSecurityRequests(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.cors().disable().httpBasic().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("recipe/**").permitAll()
-                .requestMatchers("user/**").permitAll());
+        httpSecurity.cors();
+        httpSecurity.csrf().disable();
+        httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        httpSecurity.authorizeHttpRequests()
+                .requestMatchers("/user/**").permitAll()
+                .requestMatchers("/recipe/**").permitAll()
+                .anyRequest().authenticated();
         return httpSecurity.build();
     }
 }
