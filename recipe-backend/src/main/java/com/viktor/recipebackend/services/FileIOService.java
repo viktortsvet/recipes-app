@@ -1,6 +1,7 @@
 package com.viktor.recipebackend.services;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
@@ -15,7 +16,7 @@ import java.nio.file.Paths;
 @Service
 public class FileIOService {
 
-    public File writeFile(XWPFDocument document, String filename, String fileType) throws IOException {
+    public File writeFile(@NonNull XWPFDocument document, String filename, String fileType) throws IOException {
         File fileOut = File.createTempFile(filename, fileType);
         FileOutputStream outputStream = new FileOutputStream(fileOut);
         document.write(outputStream);
