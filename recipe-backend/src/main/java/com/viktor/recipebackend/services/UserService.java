@@ -5,6 +5,7 @@ import com.viktor.recipebackend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -21,6 +22,10 @@ public class UserService {
         return userRepository.existsById(idUser) ? userRepository.findById(idUser) : Optional.empty();
     }
 
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
     public void addOrUpdateUser(User user) {
         if (user.getId() != null && userRepository.existsById(user.getId())) {
             userRepository.save(user);
@@ -30,6 +35,7 @@ public class UserService {
             newUser.setLastname(user.getLastname());
             newUser.setUsername(user.getUsername());
             newUser.setPassword(user.getPassword());
+            newUser.setRole(user.getRole());
             userRepository.save(newUser);
         }
     }

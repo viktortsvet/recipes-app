@@ -18,6 +18,10 @@ public class RecipeService {
     public Optional<Recipe> getRecipeById(UUID idRecipe) {
         return recipeRepository.existsById(idRecipe) ? recipeRepository.findById(idRecipe) : Optional.empty();
     }
+    public Recipe findRecipeById(UUID idRecipe) {
+        Recipe recipe = recipeRepository.findRecipeById(idRecipe);
+        return recipe;
+    }
 
     public void addOrUpdateRecipe(Recipe recipe) {
         if (recipe.getId() != null && recipeRepository.existsById(recipe.getId())) {

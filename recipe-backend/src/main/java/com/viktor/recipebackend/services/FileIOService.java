@@ -1,11 +1,11 @@
 package com.viktor.recipebackend.services;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -33,8 +33,8 @@ public class FileIOService {
         return cd;
     }
 
-    public ContentDescriptor generateFile(File fileOut, HttpServletResponse response, String fileType) throws IOException {
-        ContentDescriptor cd = getFileDescription(fileOut, "application/" + fileType);
+    public ContentDescriptor generateFile(File fileOut, HttpServletResponse response) throws IOException {
+        ContentDescriptor cd = getFileDescription(fileOut, "application/msword");
         if (cd != null && cd.content != null) {
             String filename = new String(cd.filename.getBytes("Cp1251"), "Cp1252");
             response.setHeader("Content-Disposition", "attachment;filename=" + filename);

@@ -2,36 +2,37 @@ package com.viktor.recipebackend.controllers;
 
 import com.viktor.recipebackend.entities.Recipe;
 import com.viktor.recipebackend.services.ExportDocumentService;
+import com.viktor.recipebackend.services.RecipeService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.util.UUID;
 
 @RestController
+@CrossOrigin
 @RequestMapping("exportDoc")
 public class ExportDocumentController {
     private final ExportDocumentService exportDocumentService;
+    private final RecipeService recipeService;
 
     @Autowired
-    public ExportDocumentController(ExportDocumentService exportDocumentService) {
+    public ExportDocumentController(ExportDocumentService exportDocumentService,
+                                    RecipeService recipeService) {
         this.exportDocumentService = exportDocumentService;
+        this.recipeService = recipeService;
     }
 
-    @GetMapping("recipe-word")
-    public ResponseEntity<?> getExportWordRecipe(@RequestParam(value = "recipe")Recipe recipe,
+    @PostMapping(value = "recipe-word")
+    public ResponseEntity<?> getExportWordRecipe(@RequestParam(value = "idRecipe") UUID idRecipe,
                                                  HttpServletResponse response) {
-        try {
+        Recipe recipe = recipeService.findRecipeById(idRecipe);
+        if (recipe != null) {
             exportDocumentService.exportRecipeWord(recipe, response);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

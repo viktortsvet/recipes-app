@@ -19,6 +19,7 @@ public class SecurityConfig {
         httpSecurity.authorizeHttpRequests()
                 .requestMatchers("/user/**").permitAll()
                 .requestMatchers("/recipe/**").permitAll()
+                .requestMatchers("/exportDoc/**").permitAll()
                 .anyRequest().authenticated();
         return httpSecurity.build();
     }
