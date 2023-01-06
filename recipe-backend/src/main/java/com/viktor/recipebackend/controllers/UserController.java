@@ -1,8 +1,5 @@
 package com.viktor.recipebackend.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.viktor.recipebackend.entities.User;
 import com.viktor.recipebackend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +7,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin
 @RequestMapping("user")
 public class UserController {
     private final UserService userService;
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     public UserController(UserService userService) {
@@ -29,10 +27,18 @@ public class UserController {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
-    @PostMapping("addOrUpdate")
-    public ResponseEntity<?> addOrUpdateUser(@RequestBody String user) throws JsonProcessingException {
+    @PostMapping("getByTheirIds")
+    public ResponseEntity<List<User>> getUsersByTheirIds(@RequestBody List<UUID> ids) {
+        List<String> dataIds = new ArrayList<>();
+        for (UUID id : ids) {
+            dataIds.add(id.toString());
+        }
+        return new ResponseEntity<>(userService.getUsersByTheirIds(dataIds), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "addOrUpdate")
+    public ResponseEntity<?> addOrUpdateUser(@RequestBody User user) {
         if (user != null) {
-            JsonNode jsonNode = objectMapper.readTree(user);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
         return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);

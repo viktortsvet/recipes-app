@@ -63,7 +63,7 @@ axios.defaults.baseURL = Constants.backendBaseUrl;
                 };
                 axios.post("user/addOrUpdate", JSON.stringify(test), {
                     headers: {
-
+                        "Content-type": 'application/json'
                     }
                 })
                     .then(result => console.log(result)).catch(e => console.error(e));
