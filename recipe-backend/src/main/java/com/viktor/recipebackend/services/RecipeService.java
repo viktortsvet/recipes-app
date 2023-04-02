@@ -4,6 +4,7 @@ import com.viktor.recipebackend.entities.Recipe;
 import com.viktor.recipebackend.entities.User;
 import com.viktor.recipebackend.other.user_with_recipes.UserWithHisRecipes;
 import com.viktor.recipebackend.repositories.RecipeRepository;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +34,15 @@ public class RecipeService {
         Optional<User> user = userService.getUserById(idUser);
         List<Recipe> recipes = recipeRepository.getRecipesByIdUser(idUser);
         return new UserWithHisRecipes(user.orElse(null), recipes);
+    }
+
+    public void createRecipe(@NonNull UUID idUser, @NonNull String recipeName, @NonNull String description) {
+        User user = userService.getUserById(idUser).orElseThrow();
+        Recipe recipe = new Recipe();
+        recipe.setUser(user);
+        recipe.setRecipeName(recipeName);
+        recipe.setDescription(description);
+        recipeRepository.save(recipe);
     }
 
     public void addOrUpdateRecipe(Recipe recipe) {

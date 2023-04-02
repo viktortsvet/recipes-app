@@ -1,14 +1,14 @@
 package com.viktor.recipebackend.services;
 
+import com.viktor.recipebackend.entities.Recipe;
 import com.viktor.recipebackend.entities.User;
 import com.viktor.recipebackend.repositories.UserRepository;
+import com.viktor.recipebackend.structures.UserDTO;
 import com.viktor.recipebackend.utils.QueryUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -26,8 +26,21 @@ public class UserService {
         return userRepository.existsById(idUser) ? userRepository.findById(idUser) : Optional.empty();
     }
 
-    public List<String> getTestAllUsers() {
-        String sql = "select users.name from users";
+    public List<UserDTO> getTestAllUsers() {
+        String hql = "select new com.viktor.recipebackend.structures.UserDTO(" +
+                "u.id, u.name, u.lastname" +
+                ") from User u";
+        return queryService.executeHql(hql, UserDTO.class);
+    }
+
+    public List<Object> getUsersSqlDto() {
+        String sql = "select u.name, u.id, r.recipe_name from users as u, recipes as r " +
+                "where u.id = r.id_user";
+        return queryService.executeSql(sql);
+    }
+
+    public List<Recipe> getRecipes() {
+        String sql = "select r from recipes as r";
         return queryService.executeSql(sql);
     }
 

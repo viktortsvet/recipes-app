@@ -1,12 +1,26 @@
 package com.viktor.recipebackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -22,55 +36,46 @@ public class User {
     @Column(name = "username")
     private String username;
 
-    @Column(name = "password", length = 7)
+    @JsonIgnore
+    @Column(name = "password")
     private String password;
 
-    @Column(name = "role", length = 4)
-    private String role;
+    @JsonIgnore
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    public User() {}
-
-    public void setName(String name) {
-        this.name = name;
+    public String getLink() {
+        return "<a href=\"customer.html?id=" + getId() + " target=\"blank\">" + getName() + " " +
+                "" + getLastname() + "</a>";
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    @JsonIgnore
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    @JsonIgnore
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public UUID getId() {
-        return id;
+    @JsonIgnore
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

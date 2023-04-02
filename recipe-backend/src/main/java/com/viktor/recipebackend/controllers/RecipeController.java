@@ -26,6 +26,14 @@ public class RecipeController {
         return new ResponseEntity<>(recipeService.getRecipesByUserId(idUser), HttpStatus.OK);
     }
 
+    @PostMapping("createRecipe")
+    public ResponseEntity<?> createRecipe(@RequestParam(value = "idUser") UUID idUser,
+                                          @RequestParam(value = "recipeName") String recipeName,
+                                          @RequestParam(value = "description") String description) {
+        recipeService.createRecipe(idUser, recipeName, description);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PostMapping("addOrUpdate")
     public ResponseEntity<?> addOrUpdateRecipe(@RequestBody Recipe recipe) {
         if (recipe != null) {
