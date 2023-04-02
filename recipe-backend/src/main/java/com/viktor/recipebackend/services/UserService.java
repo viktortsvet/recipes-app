@@ -44,6 +44,12 @@ public class UserService {
         return queryService.executeSql(sql);
     }
 
+    public User getUserByUsername(String username) {
+        String sql = "select u.* from users where u.username = " + username;
+        List<User> user = queryService.executeSql(sql, User.class);
+        return user.size() != 0 ? user.get(0) : null;
+    }
+
     public List<User> getUsersByTheirIds(List<String> usersIds) {
         String[] ids = usersIds.toArray(new String[0]);
         String sql = "select u.* from users u where id in (" +
