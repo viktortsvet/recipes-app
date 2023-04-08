@@ -28,6 +28,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .requestMatchers("/recipe/**").permitAll()
                 .requestMatchers("/exportDoc/**").permitAll()
                 .requestMatchers("/user/**").permitAll()
+                .requestMatchers("/file/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

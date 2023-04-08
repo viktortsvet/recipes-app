@@ -1,7 +1,9 @@
 package com.viktor.recipebackend.security.config;
 
 import com.viktor.recipebackend.repositories.UserRepository;
+import jakarta.servlet.MultipartConfigElement;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.unit.DataSize;
 
 @Configuration
 @RequiredArgsConstructor
@@ -41,5 +44,13 @@ public class ApplicationConfig {
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
+    }
+
+    @Bean
+    public MultipartConfigElement multipartConfigElement() {
+        MultipartConfigFactory multipartConfigFactory = new MultipartConfigFactory();
+        multipartConfigFactory.setMaxFileSize(DataSize.parse("500MB"));
+        multipartConfigFactory.setMaxRequestSize(DataSize.parse("500MB"));
+        return multipartConfigFactory.createMultipartConfig();
     }
 }
