@@ -7,10 +7,22 @@
 
 <script>
     import CreateRecipe from "@/components/create-recipe";
+    import axios from "axios";
+    import Constants from "@/constants/Constants";
+    axios.defaults.baseURL = Constants.backendBaseUrl;
+
     export default {
         name: 'app',
         components: {
             CreateRecipe
+        },
+
+        mounted() {
+            axios.get("recipe/recipesDto")
+            .then(result => {
+                console.log('recipes sql:');
+                console.log(result);
+            }).catch(e => console.error(e));
         },
 
         methods: {

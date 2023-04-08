@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @GetMapping("usersSql")
-    public ResponseEntity<List<Object>> getUsersSql() {
+    public ResponseEntity<List<UserDTO>> getUsersSql() {
         return new ResponseEntity<>(userService.getUsersSqlDto(), HttpStatus.OK);
     }
 

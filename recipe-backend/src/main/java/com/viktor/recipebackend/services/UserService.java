@@ -33,15 +33,23 @@ public class UserService {
         return queryService.executeHql(hql, UserDTO.class);
     }
 
-    public List<Object> getUsersSqlDto() {
+    public List<UserDTO> getUsersSqlDto() {
         String sql = "select u.name, u.id, r.recipe_name from users as u, recipes as r " +
                 "where u.id = r.id_user";
-        return queryService.executeSql(sql);
+        List<Object> list = queryService.executeSql(sql);
+        List<UserDTO> result = new ArrayList<>();
+        for (Object item : list) {
+            String name = ((Object[])item)[0].toString();
+            UUID id = UUID.fromString(((Object[])item)[1].toString());
+            String lastname = ((Object[])item)[2].toString();
+            result.add(new UserDTO(id, name, lastname));
+        }
+        return result;
     }
 
     public List<Recipe> getRecipes() {
-        String sql = "select r from recipes as r";
-        return queryService.executeSql(sql);
+        String sql = "select r.* from recipes as r";
+        return queryService.executeSql(sql, Recipe.class);
     }
 
     public User getUserByUsername(String username) {
