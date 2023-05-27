@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import FormStorage from "@/store/FormStorage";
+import AuthenticationStorage from "@/store/AuthenticationStorage";
 
 Vue.use(Vuex)
 
@@ -15,6 +16,7 @@ export default new Vuex.Store({
     actions: {
     },
     modules: {
-        FormStorage
+        FormStorage,
+        AuthenticationStorage
     }
 })

@@ -1,6 +1,7 @@
 package com.viktor.recipebackend.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,6 +45,25 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "chats_users", joinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "id_chat", referencedColumnName = "id"))
+    private List<Chat> chats;
+
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "users_liked_recipes", joinColumns = @JoinColumn(name = "id_user"),
+    inverseJoinColumns = @JoinColumn(name = "id_recipe"))
+    private List<Recipe> recipes;
+
+    public void addRecipe(Recipe recipe) {
+        recipes.add(recipe);
+    }
+
+    public void addChat(Chat chat) {
+        chats.add(chat);
+    }
     public String getLink() {
         return "<a href=\"customer.html?id=" + getId() + " target=\"blank\">" + getName() + " " +
                 "" + getLastname() + "</a>";

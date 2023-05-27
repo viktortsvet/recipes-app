@@ -26,37 +26,6 @@ public class UserService {
         return userRepository.existsById(idUser) ? userRepository.findById(idUser) : Optional.empty();
     }
 
-    public List<UserDTO> getTestAllUsers() {
-        String hql = "select new com.viktor.recipebackend.structures.UserDTO(" +
-                "u.id, u.name, u.lastname" +
-                ") from User u";
-        return queryService.executeHql(hql, UserDTO.class);
-    }
-
-    public List<Object> getUsersSqlDto() {
-        String sql = "select u.name, u.id, r.recipe_name from users as u, recipes as r " +
-                "where u.id = r.id_user";
-        return queryService.executeSql(sql);
-    }
-
-    public List<Recipe> getRecipes() {
-        String sql = "select r from recipes as r";
-        return queryService.executeSql(sql);
-    }
-
-    public User getUserByUsername(String username) {
-        String sql = "select u.* from users where u.username = " + username;
-        List<User> user = queryService.executeSql(sql, User.class);
-        return user.size() != 0 ? user.get(0) : null;
-    }
-
-    public List<User> getUsersByTheirIds(List<String> usersIds) {
-        String[] ids = usersIds.toArray(new String[0]);
-        String sql = "select u.* from users u where id in (" +
-                QueryUtils.stringDataToStringForQuery(ids) + ")";
-        return queryService.executeSql(sql, User.class);
-    }
-
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }

@@ -1,23 +1,43 @@
 <template>
     <div>
-        <create-recipe></create-recipe>
-        <h1>Для теста!</h1>
+        <common-form :onSubmit="authenticate"></common-form>
     </div>
 </template>
 
 <script>
-    import CreateRecipe from "@/components/create-recipe";
+    import axios from "axios";
+    import Constants from "@/constants/Constants";
+    import CommonForm from "@/components/common-form";
+
+    axios.defaults.baseURL = Constants.backendBaseUrl;
+
     export default {
         name: 'app',
         components: {
-            CreateRecipe
+            CommonForm
+
+        },
+
+        data() {
+            return {
+                file: null,
+                filename: null,
+                valueDate: '',
+                dates: []
+            }
+        },
+
+        mounted() {
+            const authenticateForm = this.$store.getters['AuthenticationStorage/authenticateForm'];
+            this.$store.dispatch('FormStorage/setDataForm', authenticateForm);
         },
 
         methods: {
-            mouseEnter(e) {
-                console.log('mouse enter');
-                console.log(e);
-            }
+            authenticate() {
+                this.$store.dispatch('AuthenticationStorage/authenticate');
+            },
+
+
         }
 
     }

@@ -1,13 +1,15 @@
 package com.viktor.recipebackend.controllers;
 
 import com.viktor.recipebackend.entities.Recipe;
-import com.viktor.recipebackend.other.user_with_recipes.UserWithHisRecipes;
 import com.viktor.recipebackend.services.RecipeService;
+import com.viktor.recipebackend.structures.QueryResultData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -22,8 +24,16 @@ public class RecipeController {
     }
 
     @GetMapping("recipes-by-userId")
-    public ResponseEntity<UserWithHisRecipes> getRecipesByUserId(@RequestParam(value = "idUser") UUID idUser) {
-        return new ResponseEntity<>(recipeService.getRecipesByUserId(idUser), HttpStatus.OK);
+    public ResponseEntity<QueryResultData<List<Map<String, Object>>>> getRecipesByUserId(
+            @RequestParam(value = "start", required = false) Integer start,
+            @RequestParam(value = "pageSize", required = false) Integer pageSize,
+            @RequestParam(value = "idUser") UUID idUser) {
+        return new ResponseEntity<>(recipeService.getRecipesByUserId(start, pageSize, idUser), HttpStatus.OK);
+    }
+
+    @GetMapping("getRecipesByName")
+    public ResponseEntity<List<Recipe>> getRecipesByName(@RequestParam(value = "names") String names) {
+        return new ResponseEntity<>(recipeService.getRecipesByName(names), HttpStatus.OK);
     }
 
     @PostMapping("createRecipe")

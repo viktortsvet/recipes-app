@@ -2,6 +2,7 @@
     <el-form :model="dataForm" ref="commonForm">
         <el-form-item :label="item.label" :key="item.key" v-for="item in dataForm.data">
             <el-input v-if="item.type === 'text'" v-model="item.value"></el-input>
+            <el-input show-password v-if="item.type === 'password'" v-model="item.value"></el-input>
             <el-input :rows="3" type="textarea" v-if="item.type === 'textarea'" v-model="item.value"></el-input>
             <el-select
                 v-if="item.type === 'select'"
@@ -26,24 +27,9 @@
 </template>
 
 <script>
-import ElForm from 'element-ui/lib/form';
-import ElFormItem from 'element-ui/lib/form-item';
-import ElInput from 'element-ui/lib/input';
-import ElSelect from 'element-ui/lib/select';
-import ElOption from 'element-ui/lib/option';
-import ElButton from 'element-ui/lib/button';
 export default {
     name: "common-form",
-    components: {
-        ElForm,
-        ElFormItem,
-        ElInput,
-        ElSelect,
-        ElOption,
-        ElButton
-    },
     props: {
-        $store: Object,
         onSubmit: Function
     },
     computed: {

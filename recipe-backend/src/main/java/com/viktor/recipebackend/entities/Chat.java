@@ -3,39 +3,34 @@ package com.viktor.recipebackend.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
 
-@Data
-@Builder
-@NoArgsConstructor
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name = "recipes")
-public class Recipe {
+@Table(name = "chats")
+public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "recipe_name")
-    private String recipeName;
+    @Column(name = "title")
+    private String title;
 
     @Column(name = "description")
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "id_user", nullable = false)
-    private User user;
-
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "users_liked_recipes", joinColumns = @JoinColumn(name = "id_recipe"),
-    inverseJoinColumns = @JoinColumn(name = "id_user"))
+    @JoinTable(name = "chats_users", joinColumns = @JoinColumn(name = "id_chat", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id"))
     private List<User> users;
-
 }
