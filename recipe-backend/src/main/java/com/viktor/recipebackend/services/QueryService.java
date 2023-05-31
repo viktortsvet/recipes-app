@@ -35,8 +35,12 @@ public class QueryService {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> List<T> executeSql(@Nonnull String sql, @Nullable Class<T> returnClass) {
+    public <T> List<T> executeSql(@Nonnull String sql, @Nullable Class<T> returnClass,
+                                  @Nullable Map<String, Object> params) {
         Query query = createQuery(sql, returnClass);
+        if (params != null && !params.isEmpty()) {
+            setQueryParams(query, params);
+        }
         return (List<T>) query.getResultList();
     }
 
@@ -53,10 +57,18 @@ public class QueryService {
         return (List<T>) query.getResultList();
     }
 
-    public long executeSqlSingleResult(String sqlCount, Map<String, Object> params) {
+    public long executeSqlSingleLongResult(@Nonnull String sqlCount, @Nullable Map<String, Object> params) {
         Query query = createQuery(sqlCount, null);
         setQueryParams(query, params);
         return (long) query.getSingleResult();
+    }
+
+    public boolean executeSqlSingleBooleanResult(@Nonnull String sql, @Nullable Map<String, Object> params) {
+        Query query = createQuery(sql, null);
+        if (params != null && !params.isEmpty()) {
+            setQueryParams(query, params);
+        }
+        return (boolean) query.getSingleResult();
     }
 
     private void setPaginationParams(Query query, Bounds bounds, Integer start, Integer pageSize) {

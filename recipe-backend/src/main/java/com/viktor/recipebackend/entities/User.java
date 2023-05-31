@@ -51,16 +51,6 @@ public class User implements UserDetails {
     inverseJoinColumns = @JoinColumn(name = "id_chat", referencedColumnName = "id"))
     private List<Chat> chats;
 
-    @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "users_liked_recipes", joinColumns = @JoinColumn(name = "id_user"),
-    inverseJoinColumns = @JoinColumn(name = "id_recipe"))
-    private List<Recipe> recipes;
-
-    public void addRecipe(Recipe recipe) {
-        recipes.add(recipe);
-    }
-
     public void addChat(Chat chat) {
         chats.add(chat);
     }

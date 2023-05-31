@@ -32,10 +32,4 @@ public class Recipe {
     @JoinColumn(name = "id_user", nullable = false)
     private User user;
 
-    @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "users_liked_recipes", joinColumns = @JoinColumn(name = "id_recipe"),
-    inverseJoinColumns = @JoinColumn(name = "id_user"))
-    private List<User> users;
-
 }

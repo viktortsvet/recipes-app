@@ -44,7 +44,7 @@ public class RecipeService {
         String sqlCount = "select count(*) from recipes where id_user = :idUser";
         Map<String, Object> countParams = new HashMap<>();
         countParams.put("idUser", idUser);
-        long recordsLength = queryService.executeSqlSingleResult(sqlCount, countParams);
+        long recordsLength = queryService.executeSqlSingleLongResult(sqlCount, countParams);
         Map<String, Object> params = new HashMap<>();
         params.put("idUser", idUser);
         List<Object> objectItems = queryService.executeSql(sql, null, params, QueryService.Bounds.BOUND_BOTH, start, pageSize);
