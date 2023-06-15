@@ -3,17 +3,7 @@
         <h2>Всего рецептов: {{maxRecords}}. Отображено записей: {{recipes.length}}</h2>
         <ul class="recipes_list" v-infinite-scroll="load">
             <li :key="recipe.id" v-for="recipe in recipes">
-                <el-card style="height: 100%">
-<!--                    <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">-->
-                    <div slot="header">
-                        <span>{{recipe.recipeName}}</span>
-                        <el-button style="float: right; padding: 3px 0" type="text">Operation button</el-button>
-                    </div>
-                    <div class="text item">
-                        {{recipe.description}}
-                        <button @click="doLike(idUser, recipe.id)">Нравится</button>
-                    </div>
-                </el-card>
+                <recipe-menu-component :id-user="idUser" :recipe="recipe"></recipe-menu-component>
             </li>
         </ul>
     </div>
@@ -29,6 +19,7 @@ Vue.use(infiniteScroll);
 import ElCard from 'element-ui/lib/card';
 import ElButton from 'element-ui/lib/button';
 import {Loading} from "element-ui";
+import RecipeMenuComponent from "@/components/recipe-menu-component";
 
 Vue.use(Loading);
 axios.defaults.baseURL = Constants.backendBaseUrl;
@@ -36,6 +27,7 @@ axios.defaults.baseURL = Constants.backendBaseUrl;
 export default {
     name: "recipes-list",
     components: {
+        RecipeMenuComponent,
         ElCard,
         ElButton
     },
@@ -64,15 +56,7 @@ export default {
             }
         },
 
-        doLike(idUser, idRecipe) {
-            if (!!idUser && !!idRecipe) {
-                const likeDto = {idUser, idRecipe};
-                axios.post("like/doLike", likeDto)
-                .then(result => {
-                    console.log(result);
-                }).catch(e => console.error(e));
-            }
-        },
+
 
         requestMethod(start, pageSize, idUser) {
             if (!!idUser) {

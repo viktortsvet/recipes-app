@@ -26,9 +26,8 @@ public class RecipeService {
     public Optional<Recipe> getRecipeById(UUID idRecipe) {
         return recipeRepository.existsById(idRecipe) ? recipeRepository.findById(idRecipe) : Optional.empty();
     }
-    public Recipe findRecipeById(UUID idRecipe) {
-        Recipe recipe = recipeRepository.findRecipeById(idRecipe);
-        return recipe;
+    public Optional<Recipe> findRecipeById(UUID idRecipe) {
+        return recipeRepository.findById(idRecipe);
     }
 
     public List<Recipe> getRecipesByName(String names) {
